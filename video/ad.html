@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aasish Shrestha — 45s ad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=JetBrains+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+  /* 1920x1080 stage. Every frame is a pure function of time: window.seek(t) sets all styles. */
+  :root { --paper:#fff; --mist:#f4f6fb; --dark:#0d0e12; --ink:#0b0c10; --ink-2:#3f4452; --ink-3:#5f6573; --line:rgba(11,12,16,.1);
+    --royal:#2347e8; --royal-deep:#1530b4; --royal-soft:#eaf0ff; --green:#0b7a3b; --amber:#a35f00; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1920px; height:1080px; overflow:hidden; background:#fff; }
+  body { font-family:'Inter', system-ui, sans-serif; font-optical-sizing:auto; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .mono { font-family:'JetBrains Mono', ui-monospace, monospace; }
+  .scene { position:absolute; inset:0; opacity:0; overflow:hidden; }
+  .abs { position:absolute; }
+  .dots { background: radial-gradient(rgba(11,12,16,.07) 1.6px, transparent 2px) 0 0 / 34px 34px; }
+  .h1 { font-weight:700; letter-spacing:-.048em; line-height:.98; }
+  .kicker { font-family:'JetBrains Mono', monospace; font-size:24px; letter-spacing:.16em; text-transform:uppercase; color:var(--royal); }
+  .pill { display:inline-flex; align-items:center; gap:12px; padding:12px 22px; border-radius:999px; background:var(--royal-soft); color:var(--royal-deep); font-family:'JetBrains Mono', monospace; font-size:22px; font-weight:500; white-space:nowrap; }
+  .pill i { width:12px; height:12px; border-radius:50%; background:var(--royal); }
+  .card { background:#fff; border-radius:24px; box-shadow:0 26px 60px rgba(11,12,16,.14), 0 0 0 1.5px var(--line); }
+  .bubble { display:flex; gap:14px; align-items:flex-start; padding:16px 22px 17px 16px; border-radius:22px; background:#fff; box-shadow:0 20px 50px rgba(11,12,16,.16), 0 0 0 1.5px var(--line); font-size:24px; line-height:1.35; white-space:nowrap; }
+  .avatar { flex:none; display:grid; place-items:center; width:42px; height:42px; border-radius:50%; background:var(--royal); color:#fff; font-size:19px; font-weight:700; }
+  .meta { display:block; font-size:18px; color:var(--ink-3); } .meta b { color:var(--ink); font-weight:600; margin-right:8px; }
+  .cursor { position:absolute; left:0; top:0; display:flex; align-items:flex-start; --c:var(--royal); }
+  .cursor svg { fill:var(--c); stroke:#fff; stroke-width:2; stroke-linejoin:round; filter:drop-shadow(0 3px 5px rgba(11,12,16,.2)); }
+  .cursor span { margin:20px 0 0 -4px; padding:6px 14px; border-radius:4px 14px 14px 14px; background:var(--c); color:#fff; font-size:19px; font-weight:600; white-space:nowrap; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; padding:18px 34px; border-radius:999px; font-size:24px; font-weight:600; }
+  .btn.ok { background:var(--royal); color:#fff; } .btn.no { box-shadow:inset 0 0 0 2px rgba(11,12,16,.18); color:var(--ink); }
+
+  /* busywork cards */
+  .task { position:absolute; width:440px; display:flex; align-items:center; gap:22px; padding:26px 28px; }
+  .task .ic { display:grid; place-items:center; width:64px; height:64px; border-radius:16px; background:var(--royal-soft); }
+  .task .ic svg { width:34px; height:34px; fill:none; stroke:var(--royal-deep); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .task b { display:block; font-size:32px; letter-spacing:-.02em; }
+  .task small { display:block; margin-top:4px; font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-3); }
+  .task .check { position:absolute; right:-16px; top:-16px; display:grid; place-items:center; width:52px; height:52px; border-radius:50%; background:var(--green); color:#fff; font-size:28px; font-weight:700; box-shadow:0 8px 20px rgba(11,122,59,.3); opacity:0; }
+
+  /* approval */
+  .approval { position:absolute; left:1000px; top:250px; width:760px; padding:40px 44px; border-radius:28px; background:#fff; box-shadow:0 30px 70px rgba(11,12,16,.16), 0 0 0 2.5px var(--royal); }
+  .approval .k { font-family:'JetBrains Mono', monospace; font-size:20px; letter-spacing:.14em; text-transform:uppercase; color:var(--royal); }
+  .approval h3 { margin-top:12px; font-size:46px; font-weight:700; letter-spacing:-.03em; }
+  .approval ul { list-style:none; display:grid; gap:16px; margin-top:26px; font-size:27px; color:var(--ink-2); }
+  .approval li { display:flex; align-items:center; gap:16px; } .approval li b { color:var(--ink); }
+  .approval .av { display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:var(--mist); font-size:19px; font-weight:700; color:var(--ink); }
+  .approval .row { position:relative; display:flex; gap:16px; margin-top:34px; height:66px; align-items:center; }
+  .approval .state { position:absolute; left:0; top:0; height:66px; display:flex; align-items:center; font-family:'JetBrains Mono', monospace; font-size:24px; opacity:0; }
+
+  /* nova */
+  /* the app in a window: the whole screenshot, never cropped (1440x1000 shots fill 960x667 exactly) */
+  .frame { position:absolute; left:830px; top:150px; width:960px; height:707px; border-radius:18px; overflow:hidden; box-shadow:0 40px 90px rgba(11,12,16,.2), 0 0 0 1.5px var(--line); background:#f4f5f8; }
+  .frame .chrome { position:absolute; left:0; right:0; top:0; height:40px; display:flex; align-items:center; gap:9px; padding:0 18px; border-bottom:1.5px solid var(--line); }
+  .frame .chrome i { width:13px; height:13px; border-radius:50%; background:#dde0e8; }
+  .frame .chrome span { position:absolute; left:0; right:0; text-align:center; font-family:'JetBrains Mono', monospace; font-size:16px; color:var(--ink-3); }
+  .frame img { position:absolute; left:0; top:40px; width:960px; height:667px; opacity:0; }
+  .feat { position:absolute; left:140px; width:620px; display:grid; grid-template-columns:64px 1fr; column-gap:8px; }
+  .feat .n { font-family:'JetBrains Mono', monospace; font-size:22px; color:var(--royal); padding-top:10px; }
+  .feat b { font-size:36px; letter-spacing:-.025em; } .feat p { grid-column:2; margin-top:6px; font-size:24px; line-height:1.4; color:var(--ink-2); }
+
+  /* hitmen */
+  .mail { position:absolute; left:880px; top:150px; width:900px; height:760px; padding:0; overflow:hidden; }
+  .mail .bar { display:flex; align-items:center; gap:10px; padding:20px 26px; border-bottom:1.5px solid var(--line); font-family:'JetBrains Mono', monospace; font-size:20px; color:var(--ink-3); }
+  .mail .bar i { width:14px; height:14px; border-radius:50%; background:#e3e6ee; }
+  .mail .body { padding:30px 40px; }
+  .mail .subj { display:flex; align-items:center; gap:16px; font-size:36px; font-weight:700; letter-spacing:-.025em; }
+  .chip { display:inline-flex; align-items:center; padding:8px 16px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:19px; font-weight:500; background:var(--royal-soft); color:var(--royal-deep); }
+  .chip.g { background:#e5f5ec; color:var(--green); }
+  .msg { margin-top:24px; padding:22px 26px; border-radius:20px; background:var(--mist); font-size:25px; line-height:1.45; color:var(--ink-2); }
+  .msg .from { display:block; font-size:20px; color:var(--ink-3); margin-bottom:6px; } .msg .from b { color:var(--ink); }
+  .draft { margin-top:22px; padding:22px 26px; border-radius:20px; box-shadow:inset 0 0 0 2.5px var(--royal); font-size:25px; line-height:1.5; color:var(--ink); min-height:210px; white-space:pre-wrap; }
+  .draft .lbl { display:block; font-family:'JetBrains Mono', monospace; font-size:18px; letter-spacing:.1em; text-transform:uppercase; color:var(--royal); margin-bottom:8px; white-space:normal; }
+  .status { margin-top:18px; font-family:'JetBrains Mono', monospace; font-size:21px; color:var(--ink-3); }
+  .casual { position:absolute; left:1250px; top:808px; width:540px; padding:26px 28px; background:var(--royal-soft); border-radius:24px; box-shadow:0 26px 60px rgba(11,12,16,.16); font-size:24px; line-height:1.45; }
+
+  /* proof + cta */
+  .stat b { display:block; font-size:120px; font-weight:700; letter-spacing:-.05em; line-height:1; color:#fff; }
+  .stat span { display:block; margin-top:14px; font-size:26px; line-height:1.35; color:#c9d0e6; }
+  .wipe { position:absolute; inset:0; background:var(--royal); z-index:20; transform:translateX(101%); }
+</style>
+</head>
+<body>
+
+<!-- 1 · cold open -->
+<section class="scene" id="s1">
+  <div class="abs" id="s1word" style="left:0; right:0; top:360px; text-align:center; font-size:250px; font-weight:700; letter-spacing:-.058em; line-height:.9; white-space:nowrap;"></div>
+  <div class="abs mono" id="s1sub" style="left:0; right:0; top:640px; text-align:center; font-size:28px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3);">Aasish Shrestha · AI engineer</div>
+  <div class="abs" id="s1pill" style="left:300px; top:250px;"><span class="pill"><i></i>Agent running</span></div>
+  <div class="abs bubble" id="s1bubble" style="left:1170px; top:180px;"><span class="avatar">A</span><span><span class="meta"><b>Aasish</b>just now</span>Let’s build your next agent.</span></div>
+  <div class="cursor" id="s1cur"><svg width="28" height="31" viewBox="0 0 18 20"><path d="M1.5 1.5 L16 9.2 L9.4 10.6 L6.6 17.6 Z"/></svg><span>You</span></div>
+</section>
+
+<!-- 2+3 · busywork, then the agent handles it -->
+<section class="scene dots" id="s2">
+  <h2 class="abs h1" id="s2a" style="left:140px; top:190px; width:760px; font-size:108px;">Your week is full of busywork.</h2>
+  <h2 class="abs h1" id="s2b" style="left:140px; top:190px; width:760px; font-size:108px; opacity:0;">I build AI agents that handle it.</h2>
+  <div class="abs" id="s2pill" style="left:140px; top:470px; opacity:0;"><span class="pill"><i></i><span id="s2count">Agent running · 0 of 6 done</span></span></div>
+  <div class="abs" id="s2counter" style="left:140px; top:720px;">
+    <div class="mono" id="s2label" style="font-size:24px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3);">Hours lost this week</div>
+    <div id="s2num" style="font-size:120px; font-weight:700; letter-spacing:-.05em; line-height:1.05;">0.0</div>
+  </div>
+  <div id="tasks"></div>
+  <div class="cursor" id="s2cur" style="--c:var(--ink)"><svg width="28" height="31" viewBox="0 0 18 20"><path d="M1.5 1.5 L16 9.2 L9.4 10.6 L6.6 17.6 Z"/></svg><span>Agent</span></div>
+</section>
+
+<!-- 4 · trust -->
+<section class="scene" id="s4">
+  <h2 class="abs h1" id="s4h" style="left:140px; top:300px; width:780px; font-size:108px;">And they ask before they act.</h2>
+  <div class="approval" id="s4card">
+    <div class="k">Approval needed</div>
+    <h3>Send 3 follow-up emails?</h3>
+    <ul>
+      <li><span class="av">M</span><span><b>Maya</b> · Re: Invoice #2041</span></li>
+      <li><span class="av">S</span><span><b>Sam</b> · Re: Project kickoff</span></li>
+      <li><span class="av">L</span><span><b>Lee</b> · Re: Contract renewal</span></li>
+    </ul>
+    <div class="row">
+      <div id="s4btns" style="display:flex; gap:16px;"><span class="btn ok" id="s4ok">Approve</span><span class="btn no">Deny</span></div>
+      <div class="state" id="s4st1" style="color:var(--ink-3);">Approved · sending…</div>
+      <div class="state" id="s4st2" style="color:var(--green); font-weight:500;">✓ Sent · receipt #A-1029 saved</div>
+    </div>
+  </div>
+  <div class="abs bubble" id="s4bubble" style="left:140px; top:760px;"><span class="avatar">A</span><span><span class="meta"><b>Aasish</b>just now</span>Done. Nothing went out without you.</span></div>
+  <div class="cursor" id="s4cur"><svg width="28" height="31" viewBox="0 0 18 20"><path d="M1.5 1.5 L16 9.2 L9.4 10.6 L6.6 17.6 Z"/></svg><span>You</span></div>
+</section>
+
+<!-- 5 · product: Nova OS -->
+<section class="scene" id="s5" style="background:var(--mist);">
+  <div class="abs kicker" id="s5k" style="left:140px; top:150px;">Product 01 · Nova OS</div>
+  <h2 class="abs h1" id="s5t" style="left:132px; top:196px; font-size:176px; letter-spacing:-.062em;">Nova OS</h2>
+  <p class="abs" id="s5s" style="left:140px; top:384px; font-size:40px; font-weight:600; color:var(--ink-2); letter-spacing:-.02em;">Your private AI workspace.</p>
+  <div class="feat" id="f1" style="top:490px;"><span class="n">01</span><b>Your keys, any model</b><p>OpenAI or any compatible provider, keys encrypted.</p></div>
+  <div class="feat" id="f2" style="top:628px;"><span class="n">02</span><b>Work that survives failure</b><p>A durable queue, up to 10 tasks at once, with receipts.</p></div>
+  <div class="feat" id="f3" style="top:766px;"><span class="n">03</span><b>Memory you choose</b><p>Only the notes you tick are ever shared.</p></div>
+  <div class="frame" id="s5frame">
+    <div class="chrome"><i></i><i></i><i></i><span>Nova OS</span></div>
+    <img id="n1" src="../public/work/nova-connections-desktop.webp" alt="">
+    <img id="n2" src="../public/work/nova-approval-desktop.webp" alt="">
+    <img id="n3" src="../public/work/nova-memory-desktop.webp" alt="">
+  </div>
+  <div class="abs bubble" id="s5b1" style="left:860px; top:880px;"><span class="avatar">N</span><span><span class="meta"><b>Nova</b>now</span>Using your own OpenAI key.</span></div>
+  <div class="abs bubble" id="s5b2" style="left:860px; top:880px;"><span class="avatar">N</span><span><span class="meta"><b>Nova</b>now</span>Task finished. Receipt saved.</span></div>
+  <div class="abs bubble" id="s5b3" style="left:860px; top:880px;"><span class="avatar">N</span><span><span class="meta"><b>Nova</b>now</span>1 note shared. Everything else stays private.</span></div>
+  <div class="abs" id="s5tag" style="left:1330px; top:80px;"><span class="pill">Built solo in 3 weeks · 176 commits</span></div>
+</section>
+
+<!-- 6 · product: Hitmen -->
+<section class="scene dots" id="s6">
+  <div class="abs kicker" id="s6k" style="left:140px; top:150px;">Product 02 · Hitmen</div>
+  <h2 class="abs h1" id="s6t" style="left:132px; top:196px; font-size:176px; letter-spacing:-.062em;">Hitmen</h2>
+  <p class="abs" id="s6s" style="left:140px; top:384px; width:640px; font-size:40px; font-weight:600; color:var(--ink-2); letter-spacing:-.02em; line-height:1.25;">Replies, drafted in your tone.</p>
+  <div class="abs" id="s6n" style="left:140px; top:620px; width:640px;">
+    <div style="font-size:60px; font-weight:700; letter-spacing:-.04em; line-height:1.05; color:var(--royal);">Never sends<br>without you.</div>
+    <div class="mono" style="margin-top:18px; font-size:22px; color:var(--ink-3);">Drafts only · you hit send</div>
+  </div>
+  <div class="card mail" id="s6mail">
+    <div class="bar"><i></i><i></i><i></i><span style="margin-left:12px;">Inbox · Gmail</span></div>
+    <div class="body">
+      <div class="subj">Re: Invoice #2041 <span class="chip" id="s6label">Auto D</span><span class="chip g" id="s6tone">Tone: formal</span></div>
+      <div class="msg"><span class="from"><b>Maya Chen</b> · 9:12 AM</span>Hi Aasish, just checking that last month’s invoice has been paid?</div>
+      <div class="status" id="s6status">Hitmen · reading the thread…</div>
+      <div class="draft" id="s6draft"><span class="lbl">Draft · not sent</span><span id="s6type"></span></div>
+    </div>
+  </div>
+  <div class="casual" id="s6casual"><span class="chip g" style="margin-bottom:12px;">Tone: casual</span><br>Hey Sam! Saturday works, count me in. I’ll bring snacks.</div>
+</section>
+
+<!-- 7 · proof -->
+<section class="scene" id="s7" style="background:var(--dark); color:#fff;">
+  <h2 class="abs h1" id="s7t" style="left:140px; top:190px; font-size:150px;">Security first.</h2>
+  <div class="abs mono" id="s7s" style="left:146px; top:370px; font-size:28px; color:#9fb4ff; letter-spacing:.04em;">Trained in ethical hacking · Coventry University</div>
+  <div class="abs" id="s7stats" style="left:140px; top:560px; display:flex; gap:120px;">
+    <div class="stat"><b id="c1">0</b><span>commits in<br>3 weeks</span></div>
+    <div class="stat"><b id="c2">0</b><span>automated<br>test files</span></div>
+    <div class="stat"><b id="c3">0</b><span>screens audited<br>for accessibility</span></div>
+  </div>
+</section>
+
+<!-- 8 · call to action -->
+<section class="scene" id="s8" style="background:var(--royal); color:#fff;">
+  <h2 class="abs h1" id="s8t" style="left:140px; top:230px; width:1500px; font-size:136px; letter-spacing:-.055em;"></h2>
+  <div class="abs" id="s8who" style="left:144px; top:610px; font-size:32px; color:rgba(255,255,255,.88);">Aasish Shrestha · AI engineer · Fort Worth, Texas</div>
+  <div class="abs" id="s8links" style="left:140px; top:690px; display:flex; gap:18px;">
+    <span class="btn" style="background:#fff; color:var(--royal-deep); font-size:28px;">work.aasishshrestha@gmail.com</span>
+    <span class="btn" style="box-shadow:inset 0 0 0 2px rgba(255,255,255,.6); font-size:28px;">linkedin.com/in/aasish~shrestha</span>
+  </div>
+  <div class="abs" id="s8mark" style="left:140px; top:940px; font-size:40px; font-weight:700; letter-spacing:-.035em;">aasish</div>
+  <div class="abs mono" id="s8avail" style="right:140px; top:954px; font-size:22px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.85);">Available for freelance</div>
+</section>
+
+<div class="wipe" id="wipe"></div>
+
+<script>
+const C = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const E = {
+  out: (t) => 1 - Math.pow(1 - t, 3),
+  out5: (t) => 1 - Math.pow(1 - t, 5),
+  inOut: (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  back: (t) => { const c = 1.5; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); },
+  lin: (t) => t,
+};
+const P = (t, a, b, e = E.out) => e(C((t - a) / (b - a)));
+const $ = (id) => document.getElementById(id);
+const lerp = (a, b, k) => a + (b - a) * k;
+const show = (el, o) => { el.style.opacity = o; };
+const rise = (el, t, a, b, dist = 40, e = E.out5) => { const k = P(t, a, b, e); el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * dist}px)`; return k; };
+const pop = (el, t, a, b) => { const k = P(t, a, b, E.back); const o = P(t, a, a + (b - a) * .5); el.style.opacity = o; el.style.transform = `translateY(${(1 - k) * 16}px) scale(${.92 + .08 * k})`; return k; };
+// scene opacity from in/out windows
+const win = (t, a, b, fi = .3, fo = .3) => Math.min(P(t, a, a + fi, E.lin), 1 - P(t, b - fo, b, E.lin));
+
+// ---------- build dynamic content ----------
+const WORD = 'automation.';
+$('s1word').innerHTML = WORD.split('').map((c) => `<span style="display:inline-block">${c}</span>`).join('');
+const letters = [...$('s1word').children];
+
+const ICON = {
+  mail: '<path d="M4 7 H30 V27 H4 Z"/><path d="M4 8 L17 18 L30 8"/>',
+  doc: '<path d="M8 4 H21 L27 10 V30 H8 Z"/><path d="M21 4 V10 H27 M12 17 H23 M12 22 H23"/>',
+  clock: '<circle cx="17" cy="17" r="12"/><path d="M17 10 V17 L22 20"/>',
+  loop: '<path d="M27 13 A10 10 0 0 0 8 12"/><path d="M8 6 V12 H14"/><path d="M7 21 A10 10 0 0 0 26 22"/><path d="M26 28 V22 H20"/>',
+  pen: '<path d="M6 28 L8 21 L22 7 L27 12 L13 26 Z"/><path d="M19 10 L24 15"/>',
+  swap: '<path d="M6 11 H26 L21 6"/><path d="M28 23 H8 L13 28"/>',
+};
+const TASKS = [
+  ['mail', 'Inbox', '42 unread', 1050, 150, -4],
+  ['doc', 'Invoices', '7 to file', 1340, 290, 3],
+  ['clock', 'Weekly report', 'due Friday', 990, 410, 2],
+  ['loop', 'Follow-ups', '12 waiting', 1330, 540, -3],
+  ['pen', 'Meeting notes', '5 to sort', 1010, 680, -2],
+  ['swap', 'CRM updates', '23 records', 1320, 800, 4],
+];
+$('tasks').innerHTML = TASKS.map(([ic, t, m, x, y, r], i) =>
+  `<div class="task card" id="task${i}" style="left:${x}px; top:${y}px;"><span class="ic"><svg viewBox="0 0 34 34">${ICON[ic]}</svg></span><span><b>${t}</b><small>${m}</small></span><span class="check">✓</span></div>`).join('');
+const VISIT = (k) => 10.9 + k * .52;
+
+const CTA = 'Let’s automate something together.';
+$('s8t').innerHTML = CTA.split(' ').map((w) => `<span style="display:inline-block; margin-right:.24em">${w}</span>`).join('');
+const ctaWords = [...$('s8t').children];
+
+const DRAFT = 'Hi Maya,\n\nThank you for the reminder. The invoice was paid this morning, and the receipt is attached.\n\nKind regards,\nAasish';
+
+const cursorAt = (el, x, y, o = 1) => { el.style.opacity = o; el.style.transform = `translate(${x}px, ${y}px)`; };
+
+// ---------- the timeline ----------
+window.seek = (t) => {
+  // 1 · cold open (0–5)
+  const s1 = $('s1');
+  show(s1, 1 - P(t, 4.7, 5.05, E.lin));
+  s1.style.transform = `scale(${1 + .035 * P(t, 3.8, 5.05, E.inOut)})`;
+  letters.forEach((el, i) => { const a = .25 + i * .055; const k = P(t, a, a + .8, E.out5); el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * 70}px)`; });
+  rise($('s1sub'), t, 1.5, 2.3, 24);
+  pop($('s1pill'), t, 2.4, 3.0);
+  pop($('s1bubble'), t, 3.0, 3.6);
+  { const k = P(t, 2.7, 3.3, E.out); const dx = 8 * Math.sin(t * 1.3), dy = 6 * Math.cos(t * 1.1); cursorAt($('s1cur'), 1420 + dx, 560 + dy + (1 - k) * 20, k); }
+
+  // 2+3 · busywork → handled (5–15)
+  const s2 = $('s2');
+  show(s2, win(t, 4.85, 15.1, .35, .35));
+  { const a = rise($('s2a'), t, 5.15, 5.9, 40); const out = P(t, 9.75, 10.15, E.lin); $('s2a').style.opacity = a * (1 - out); }
+  rise($('s2b'), t, 10.15, 10.85, 40);
+  const done = TASKS.filter((_, k) => t >= VISIT(k) + .2).length;
+  $('s2count').textContent = `Agent running · ${done} of 6 done`;
+  pop($('s2pill'), t, 10.7, 11.2);
+  { // counter: hours lost, then hours given back
+    const back = t >= 10.6;
+    $('s2label').textContent = back ? 'Hours given back' : 'Hours lost this week';
+    $('s2label').style.color = back ? 'var(--royal)' : 'var(--ink-3)';
+    const v = back ? 11.5 * P(t, 11.0, 14.2, E.out) : 11.5 * P(t, 6.0, 9.4, E.out);
+    $('s2num').textContent = v.toFixed(1);
+    $('s2num').style.color = back ? 'var(--royal)' : 'var(--ink)';
+    rise($('s2counter'), t, 5.7, 6.4, 24);
+  }
+  TASKS.forEach(([, , , x, y, r], k) => {
+    const el = $(`task${k}`);
+    const a = 5.65 + k * .38;
+    const kin = P(t, a, a + .6, E.back);
+    const vis = P(t, a, a + .3, E.lin);
+    const doneK = P(t, VISIT(k) + .15, VISIT(k) + .45);
+    const away = P(t, 14.15 + k * .05, 14.75 + k * .05, E.inOut);
+    el.style.opacity = vis * (1 - .4 * doneK) * (1 - away);
+    el.style.transform = `translate(${away * 140}px, ${(1 - kin) * -70}px) rotate(${(1 - kin) * r * 2 + r}deg) scale(${1 - .03 * doneK})`;
+    el.querySelector('b').style.textDecoration = doneK > .5 ? 'line-through' : 'none';
+    const ck = el.querySelector('.check');
+    const kc = P(t, VISIT(k) + .12, VISIT(k) + .45, E.back);
+    ck.style.opacity = P(t, VISIT(k) + .12, VISIT(k) + .25, E.lin);
+    ck.style.transform = `scale(${.4 + .6 * kc})`;
+  });
+  { // agent cursor tours the cards
+    const cur = $('s2cur');
+    const pts = [[-120, 700], ...TASKS.map(([, , , x, y]) => [x + 300, y + 70])];
+    let x = pts[0][0], y = pts[0][1];
+    const tour = [[10.35, VISIT(0)], ...TASKS.slice(1).map((_, k) => [VISIT(k) + .12, VISIT(k + 1)])];
+    tour.forEach(([a, b], k) => { if (t >= a) { const kk = P(t, a, b, E.inOut); x = lerp(pts[k][0], pts[k + 1][0], kk); y = lerp(pts[k][1], pts[k + 1][1], kk); } });
+    if (t >= VISIT(5) + .12) { const kk = P(t, VISIT(5) + .3, 14.6, E.inOut); x = lerp(pts[6][0], 1800, kk); y = lerp(pts[6][1], 980, kk); }
+    cursorAt(cur, x, y, P(t, 10.35, 10.6, E.lin) * (1 - P(t, 14.4, 14.8, E.lin)));
+  }
+
+  // 4 · trust (15–20)
+  const s4 = $('s4');
+  show(s4, win(t, 14.95, 20.2, .3, .01));
+  rise($('s4h'), t, 15.15, 15.85, 40);
+  { const k = P(t, 15.45, 16.25, E.back); const o = P(t, 15.45, 15.8, E.lin); $('s4card').style.opacity = o; $('s4card').style.transform = `translateY(${(1 - k) * 50}px)`; }
+  { // cursor travels to Approve and clicks
+    const k = P(t, 16.5, 17.35, E.inOut);
+    const away = P(t, 17.75, 18.5, E.inOut);
+    cursorAt($('s4cur'), lerp(lerp(1820, 1180, k), 1640, away), lerp(lerp(1000, 668, k), 940, away), P(t, 16.4, 16.7, E.lin) * (1 - P(t, 19.2, 19.5, E.lin)));
+    const press = t > 17.4 && t < 17.62 ? .94 : 1;
+    $('s4ok').style.transform = `scale(${press})`;
+    $('s4btns').style.opacity = 1 - P(t, 17.65, 17.9, E.lin);
+    $('s4st1').style.opacity = P(t, 17.8, 18.0, E.lin) * (1 - P(t, 18.45, 18.6, E.lin));
+    $('s4st2').style.opacity = P(t, 18.55, 18.8, E.lin);
+  }
+  pop($('s4bubble'), t, 18.9, 19.45);
+
+  // royal wipe 4 → 5
+  { const a = P(t, 19.55, 19.97, E.inOut), b = P(t, 20.02, 20.45, E.inOut); const wp = $('wipe');
+    if (t < 19.5 || (t > 20.5 && t < 39.5)) wp.style.transform = 'translateX(101%)';
+    else if (t <= 20.5) wp.style.transform = `translateX(${101 - 101 * a - 101 * b}%)`; }
+
+  // 5 · Nova OS (20–30)
+  const s5 = $('s5');
+  show(s5, t >= 19.97 && t < 30.2 ? 1 - P(t, 29.75, 30.15, E.lin) : 0);
+  s5.style.transform = `translateY(${-60 * P(t, 29.7, 30.15, E.inOut)}px)`;
+  rise($('s5k'), t, 20.35, 20.9, 20);
+  rise($('s5t'), t, 20.45, 21.2, 50);
+  rise($('s5s'), t, 20.8, 21.45, 24);
+  const F = [[21.6, 24.1], [24.1, 26.6], [26.6, 30.5]];
+  F.forEach(([a, b], k) => { const el = $(`f${k + 1}`); const k1 = rise(el, t, a, a + .55, 24); const active = t >= a && t < b ? 1 : .42; el.style.opacity = k1 * active; });
+  { const fr = $('s5frame'); const k = P(t, 20.5, 21.3, E.out5); fr.style.opacity = P(t, 20.5, 20.9, E.lin); fr.style.transform = `translateY(${(1 - k) * 70}px) scale(${1 + .015 * C((t - 20.5) / 10)})`;   // the whole window eases in a touch
+    [['n1', 20.5, 24.1], ['n2', 24.1, 26.6], ['n3', 26.6, 30.5]].forEach(([id, a, b]) => {
+      const im = $(id); const o = Math.min(P(t, a - .01, a + .45, E.lin), 1 - P(t, b, b + .45, E.lin));
+      im.style.opacity = id === 'n1' ? Math.min(1, 1 - P(t, b, b + .45, E.lin)) : o;
+    }); }
+  [['s5b1', 22.2, 24.0], ['s5b2', 24.7, 26.5], ['s5b3', 27.2, 30.5]].forEach(([id, a, b]) => { const el = $(id); pop(el, t, a, a + .5); el.style.opacity = Math.min(+el.style.opacity, 1 - P(t, b, b + .25, E.lin)); });
+  pop($('s5tag'), t, 28.1, 28.6);
+
+  // 6 · Hitmen (30–37.5)
+  const s6 = $('s6');
+  show(s6, t >= 29.9 && t < 37.5 ? P(t, 29.9, 30.25, E.lin) : 0);
+  s6.style.transform = `translateY(${60 * (1 - P(t, 29.9, 30.35, E.out))}px) scale(${1 + .02 * P(t, 36.6, 37.5, E.inOut)})`;
+  rise($('s6k'), t, 30.3, 30.85, 20);
+  rise($('s6t'), t, 30.4, 31.1, 50);
+  rise($('s6s'), t, 30.75, 31.4, 24);
+  { const m = $('s6mail'); const k = P(t, 30.6, 31.4, E.out5); m.style.opacity = P(t, 30.6, 31.0, E.lin); m.style.transform = `translateY(${(1 - k) * 70}px)`; }
+  pop($('s6label'), t, 31.5, 31.9);
+  { const st = $('s6status'); st.style.opacity = P(t, 32.0, 32.25, E.lin); st.textContent = t < 32.7 ? 'Hitmen · reading the thread…' : 'Hitmen · tone matched to the sender'; }
+  pop($('s6tone'), t, 32.6, 33.0);
+  { const d = $('s6draft'); const k = P(t, 33.0, 33.4, E.out); d.style.opacity = k; d.style.transform = `translateY(${(1 - k) * 16}px)`;
+    const n = Math.round(DRAFT.length * P(t, 33.3, 34.9, E.lin)); $('s6type').textContent = DRAFT.slice(0, n); }
+  pop($('s6casual'), t, 35.0, 35.6);
+  rise($('s6n'), t, 35.7, 36.4, 30);
+
+  // 7 · proof (37.5–40)
+  const s7 = $('s7');
+  show(s7, t >= 37.5 && t < 40.05 ? 1 : 0);
+  rise($('s7t'), t, 37.55, 38.1, 50);
+  rise($('s7s'), t, 37.85, 38.35, 20);
+  rise($('s7stats'), t, 38.1, 38.6, 30);
+  [['c1', 176], ['c2', 101], ['c3', 23]].forEach(([id, v], k) => { $(id).textContent = Math.round(v * P(t, 38.2 + k * .1, 39.3 + k * .1, E.out)); });
+
+  // royal wipe up 7 → 8, which becomes the end card
+  if (t >= 39.5 && t < 40.05) { const k = P(t, 39.55, 40.0, E.inOut); $('wipe').style.transform = `translateY(${101 - 101 * k}%)`; }
+  else if (t >= 40.05) $('wipe').style.transform = 'translateY(101%)';
+
+  // 8 · call to action (40–45)
+  const s8 = $('s8');
+  show(s8, t >= 40.0 ? 1 : 0);
+  ctaWords.forEach((el, i) => { const a = 40.15 + i * .1; const k = P(t, a, a + .7, E.out5); el.style.opacity = k; el.style.transform = `translateY(${(1 - k) * 60}px)`; });
+  rise($('s8who'), t, 41.0, 41.6, 20);
+  rise($('s8links'), t, 41.4, 42.0, 24);
+  rise($('s8mark'), t, 41.9, 42.4, 16);
+  rise($('s8avail'), t, 42.0, 42.5, 16);
+};
+
+window.ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([...document.images].map((im) => im.decode().catch(() => {})));
+  window.seek(0);
+  return true;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+node_modules
+.next
+.env*
+!.env.example
+.next-prod
+
+# local only
+.DS_Store
+tsconfig.tsbuildinfo
+.claude/
+.impeccable/
+# raw art/voice sources (819 MB, files >100 MB); the site uses the exports in public/game
+game-assets/
+# film renders; the site uses public/film
+video/out/
