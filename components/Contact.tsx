@@ -1,6 +1,7 @@
 import Stage from './Stage';
 import ContactForm from './ContactForm';
 import GameScreen from './GameScreen';
+import CopyEmail from './CopyEmail';
 import { EMAIL, SOCIAL } from '@/lib/site';
 
 const TITLE = [['Let\'s', 'automate'], ['something', 'together']];
@@ -26,7 +27,7 @@ export default function Contact() {
           </p>
           <ContactForm />
           <p className="contact-mail">
-            Prefer email? <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            Prefer email? <a href={`mailto:${EMAIL}`}>{EMAIL}</a> <CopyEmail email={EMAIL} />
             {/* on a line of its own, so the wrap never strands one link */}
             <span className="contact-social">
               {SOCIAL.map((s, i) => <span key={s.href}>{i > 0 && ' · '}<a href={s.href} target="_blank" rel="noreferrer">{s.label}<span className="sr-only"> (opens in a new tab)</span></a></span>)}

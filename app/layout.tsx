@@ -33,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: motionFlag }} />
       </head>
       <body>
+        <a className="skip-link" href="#main">Skip to content</a>
         <SmoothScroll />
         {children}
       </body>

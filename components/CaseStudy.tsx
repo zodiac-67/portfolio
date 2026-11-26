@@ -36,7 +36,7 @@ export default function CaseStudy({ c }: { c: Case }) {
   return (
     <>
       <Header />
-      <main className="case">
+      <main id="main" tabIndex={-1} className="case">
         <header className="case-head">
           <Reveal as="p" className="kicker"><Link href="/#work" className="case-back"><span aria-hidden="true">← </span>All work</Link> · {c.kicker}</Reveal>
           <Reveal as="h1" className="case-title" delay={60}>{c.name}</Reveal>

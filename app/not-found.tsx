@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <>
       <Header />
-      <main className="case nf">
+      <main id="main" tabIndex={-1} className="case nf">
         <p className="kicker">Error 404</p>
         <h1 className="case-title">Page not found.</h1>
         <p className="case-intro">The link may be old, or the page has moved. Everything on the site is one click away.</p>
