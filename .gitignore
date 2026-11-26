@@ -13,3 +13,5 @@ tsconfig.tsbuildinfo
 game-assets/
 # film renders; the site uses public/film
 video/out/
+
+design-mockups/

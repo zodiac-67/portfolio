@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: '#ffffff', width: 'device-width', initialScale: 1 };
 
 // set before first paint, so motion-dependent initial states never flash
-const motionFlag = `try{var lk=new URLSearchParams(location.search).get('look');if(lk)document.documentElement.dataset.look=lk}catch(e){}try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-motion')}catch(e){}`;
+const motionFlag = `try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js-motion')}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -47,23 +47,6 @@ img { display: block; max-width: 100%; height: auto; }
 .cursor { --c: var(--royal); display: inline-flex; align-items: flex-start; pointer-events: none; }
 .cursor-royal { --c: var(--royal); } .cursor-ink { --c: var(--ink); } .cursor-green { --c: var(--green); } .cursor-amber { --c: var(--amber); }
 .cursor svg { flex: none; fill: var(--c); stroke: #fff; stroke-width: 1.4; stroke-linejoin: round; filter: drop-shadow(0 2px 3px rgba(11, 12, 16, .18)); }
-/* PREVIEW (?look=signal|node|term): three replacements for the multiplayer cursor. Same markup, same motion; delete the
-   losers once one is chosen */
-:root[data-look] .cursor svg { display: none; }
-:root[data-look] .cursor { --pulse: color-mix(in srgb, var(--c) 40%, transparent); align-items: center; }
-:root[data-look] .cursor .cursor-tag { margin: 0; text-transform: lowercase; font: 500 12px var(--mono); letter-spacing: .01em; }
-/* signal: a white status pill with a pulsing light, like a process that's running */
-:root[data-look=signal] .cursor-tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 10px; border-radius: var(--r-pill); background: #fff; color: var(--ink-2); border: 1px solid var(--line); box-shadow: 0 8px 22px rgba(11, 12, 16, .08); }
-:root[data-look=signal] .cursor-tag::before { content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c); animation: pulse 1.8s ease-out infinite; }
-/* node: a ring on a hairline, like a point on a system diagram, label set in plain mono */
-:root[data-look=node] .cursor::before { content: ''; flex: none; width: 9px; height: 9px; border-radius: 50%; background: #fff; border: 2px solid var(--c); animation: pulse 1.8s ease-out infinite; }
-:root[data-look=node] .cursor .cursor-tag { position: relative; margin-left: 26px; padding: 0; background: none; color: var(--ink-2); box-shadow: none; }
-:root[data-look=node] .cursor-tag::before { content: ''; position: absolute; left: -22px; top: 50%; width: 18px; border-top: 1px solid color-mix(in srgb, var(--c) 55%, transparent); }
-/* term: a small dark prompt, the colour only on the caret */
-:root[data-look=term] .cursor-tag { display: inline-flex; gap: 7px; padding: 5px 11px; border-radius: 7px; background: #11131a; color: #e8eaf0; box-shadow: 0 8px 20px rgba(11, 12, 16, .18); }
-:root[data-look=term] .cursor-tag::before { content: '›'; color: color-mix(in srgb, var(--c) 45%, #fff); font-weight: 700; }
-:root[data-look=term] .cursor-tag::after { content: ''; width: 6px; margin: 2px 0; background: color-mix(in srgb, var(--c) 45%, #fff); animation: blink 1.1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
 .cursor-tag { margin: 14px 0 0 -3px; padding: 4px 10px; border-radius: 3px 10px 10px 10px; background: var(--c); color: #fff; font-size: 12.5px; font-weight: 600; white-space: nowrap; box-shadow: 0 6px 14px rgba(11, 12, 16, .14); }
 
 /* ---------- message bubble ---------- */

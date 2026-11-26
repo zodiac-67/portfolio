@@ -56,3 +56,8 @@ npm run smoke
 
 The game uses only free-to-use assets: Nataraja (Cleveland Museum of Art, CC0), Poly Haven (CC0), Quaternius Universal Animation Library (CC0), MPFB / MakeHuman (CC0), Kokoro voices (Apache-2.0), Piper with the OHF-Voice chitwan dataset (CC0), CC0 sound effects, three.js and Rapier.
 All characters are original.
+
+## License
+
+© Aasish Shrestha. All rights reserved. The code is here to read, not to reuse.
+The third-party assets above keep their own licences.
